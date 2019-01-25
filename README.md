@@ -1,4 +1,4 @@
-# Laravel-Modules
+# Media store
 [![Issues](https://img.shields.io/github/issues/Saeid-Khaleghi/media-store.svg?style=flat-square)](https://github.com/Saeid-Khaleghi/media-store/issues)
 [![Forks](	https://img.shields.io/github/forks/Saeid-Khaleghi/media-store.svg?style=flat-square)](https://github.com/Saeid-Khaleghi/media-store/network/members)
 [![Stars](	https://img.shields.io/github/stars/Saeid-Khaleghi/media-store.svg?style=flat-square)](https://github.com/Saeid-Khaleghi/media-store/stargazers)
