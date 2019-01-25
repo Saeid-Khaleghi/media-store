@@ -16,5 +16,12 @@
         "psr-4": {
             "Khaleghi\\Media\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Khaleghi\\Media\\MediaServiceProvider"
+            ]
+        }
     }
 }
