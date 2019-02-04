@@ -141,23 +141,6 @@ if($medium->size < 102400 and $medium->extension == "jpg"){
 ## Database
 These fields will be stored in database and you are able to access them through instance of Medium model:
 
---------------------------------------------------------------
-|stored_name         | The name that file will store in storage folder 
-|file_name           | Original name of the file
-|extension
-caption 
-mime
-size                | Size of the file in bytes
-width               | Just for images
-height              | Just for images
-mediumable_id
-mediumable_type
-position            | Assigning a priority to each file with same manner of mediumable_type 
-manner              | What this file is good for. Example: avatar
-comments_count
-likes_count
-description
-
 |   Field Name   |          Usage                |
 |----------------|-------------------------------|
 |stored_name     |The name that file will store in storage folder           |
