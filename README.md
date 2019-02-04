@@ -85,7 +85,7 @@ storage\app\public\images\md    (540 x 540 px)
 storage\app\public\images\sm    (270 x 270 px)
 storage\app\public\images\xs    (135 x 135 px)
 ```
-You can access url of each path by sending this parameters:
+You can access url of each path by sending these parameters:
 ```
 $medium->url('lg') //default
 $medium->url('md') // medium size
@@ -95,7 +95,7 @@ $medium->url('xs') // extra small size
 
 **Fill free to change default image sizes at config\media.php**
 
-> **Note:** `khaleghi/media-store` uses [Intervension Image](http://http://image.intervention.io//) package to change dimension of images. It will be installed on your system as a dependency. 
+> **Note:** `khaleghi/media-store` uses [Intervension Image](http://http://image.intervention.io//) package to change dimension of images. It will be installed on your project as a dependency. 
 
 
 ### Saving other file types
@@ -125,7 +125,7 @@ $file = $user->media->first();
 echo $file->url();
 ```
 
-### Determine before Saving
+### Determine before saving
 You can make an instance of `medium` model and change it's attribute before save it:
 ```php
 $medium = new Medium();
@@ -140,10 +140,11 @@ if($medium->size < 102400 and $medium->extension == "jpg"){
 
 ## Database
 These fields will be stored in database and you are able to access them through instance of Medium model:
-```
-stored_name         | The name that file will store in storage folder 
-file_name           | Original name of the file
-extension
+
+--------------------------------------------------------------
+|stored_name         | The name that file will store in storage folder 
+|file_name           | Original name of the file
+|extension
 caption 
 mime
 size                | Size of the file in bytes
@@ -151,12 +152,28 @@ width               | Just for images
 height              | Just for images
 mediumable_id
 mediumable_type
-position            | Assigining a priority to each file with same manner of mediumable_type 
+position            | Assigning a priority to each file with same manner of mediumable_type 
 manner              | What this file is good for. Example: avatar
 comments_count
 likes_count
 description
-```
+
+|   Field Name   |          Usage                |
+|----------------|-------------------------------|
+|stored_name     |The name that file will store in storage folder           |
+|file_name       |Original name of the file      |
+|caption         ||
+|mime            ||
+|size            |Size of the file in bytes      |
+|width           |Just for images|
+|height          |Just for images|
+|mediumable_type |Name of model that this file is related to it|
+|mediumable_id   |model primary key that this file is related to it|
+|position        |Assigning a priority to each file with same manner of mediumable_type|
+|manner          |What this file is good for. Example: avatar|
+|comments_count  ||
+|likes_count     ||
+|description     ||
 
 ## License
 
