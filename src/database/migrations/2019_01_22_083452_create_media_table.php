@@ -25,7 +25,7 @@ class CreateMediaTable extends Migration
             $table->integer('height')->nullable();
             $table->integer('mediumable_id')->nullable();
             $table->string('mediumable_type')->nullable();
-            $table->tinyInteger('mediumable_position')->nullable();
+            $table->tinyInteger('position')->nullable();
             $table->string('manner')->nullable();
             $table->integer('comments_count')->default(0);
             $table->integer('likes_count')->default(0);
