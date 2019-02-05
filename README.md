@@ -114,15 +114,25 @@ The `Medium` model is a polymorphic class. So you can make a relation between yo
 ```php
 $medium = Medium::create([
     'file' => $request->file('name'),
-    'mediumable_type' => 'user',
+    'mediumable_type' => 'App\User',
     'mediumable_id' => 10 
 ]);
 ```
-Now you can access user's file:
+Now you can access to user's file:
 ```php
 $user = App\User::find(10);
 $file = $user->media->first();
 echo $file->url();
+```
+And reverse access:
+```php
+echo $medium->mediumable->email;
+```
+> **Note:** Don't forget to use morphMany in medium's related model (here: App\User).
+```php
+public function media(){
+    return $this->morphMany(Medium::class, 'mediumable');
+}
 ```
 
 ### Determine before saving
@@ -134,8 +144,15 @@ $medium->description = "Occupational and educational information";
 if($medium->size < 102400 and $medium->extension == "jpg"){
     $medium->save();
 }else{
+    $medium->detach();
     return "Error";
 }
+```
+
+## Delete a medium
+To delete a medium from Storage and Database you need to use `remove` method:
+```php
+$medium->remove();
 ```
 
 ## Database
