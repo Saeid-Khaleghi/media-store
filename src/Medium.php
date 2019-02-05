@@ -48,14 +48,7 @@ class Medium extends Model
     public function attach_file($file)
     {
         if($this->id){ // if the file already stored
-            if($this->is('image')){
-                Storage::delete($this->full_path_lg.'/'.$this->stored_name);
-                Storage::delete($this->full_path_md.'/'.$this->stored_name);
-                Storage::delete($this->full_path_sm.'/'.$this->stored_name);
-                Storage::delete($this->full_path_xs.'/'.$this->stored_name);
-            }else{
-                Storage::delete($this->full_path.'/'.$this->stored_name);
-            }
+            return false;
         }
 
         $this->file_object = $file;
@@ -66,9 +59,28 @@ class Medium extends Model
         $this->extension = strtolower($file->getClientOriginalExtension());
         $this->size = $file->getSize();
         $this->mime = $file->getMimeType();
-        $size = @is_array(getimagesize($file)) ? getimagesize($file) : [null, null];
-        $this->width = $size[0];
-        $this->height = $size[1];
+        $dimensions = @is_array(getimagesize($file)) ? getimagesize($file) : [null, null];
+        $this->width = $dimensions[0];
+        $this->height = $dimensions[1];
+
+        return true;
+    }
+
+    public function detach()
+    {
+        if(!$this->id){
+            unset($this->file_object);
+            unset($this->stored_name);
+            unset($this->file_name);
+            unset($this->extension);
+            unset($this->size);
+            unset($this->mime);
+            unset($this->width);
+            unset($this->height);
+            return true;
+        }else{
+            return false;
+        }
     }
 
     public function save(array $options = [])
@@ -110,6 +122,22 @@ class Medium extends Model
             }
         }elseif($this->is($this->type)){
             $this->file_object->storeAs(config('media.MAIN_UPLOAD_FOLDER').'/'.$this->type.'s',$stored_name);
+        }
+    }
+
+    public function remove(){
+        if($this->delete()){
+            if($this->is('image')){
+                Storage::delete($this->full_path_lg.'/'.$this->stored_name);
+                Storage::delete($this->full_path_md.'/'.$this->stored_name);
+                Storage::delete($this->full_path_sm.'/'.$this->stored_name);
+                Storage::delete($this->full_path_xs.'/'.$this->stored_name);
+            }else{
+                Storage::delete($this->full_path.'/'.$this->stored_name);
+            }
+            return true;
+        }else{
+            return false;
         }
     }
 
@@ -164,6 +192,11 @@ class Medium extends Model
 
     public function store_file_name_hashed(){
         return config('media.STORE_FILE_NAME_HASHED');
+    }
+
+    public function is_file_attached()
+    {
+        return !!$this->file_object;
     }
 
     /********************** SCOPES *********************/
