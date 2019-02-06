@@ -12,24 +12,24 @@ use Illuminate\Support\Facades\Response;
 class Medium extends Model
 {
     //use Favorite;
-    protected $guarded = ['id','file'];
+    protected $guarded = ['id', 'file'];
     public $file_object;
 
-    public function mediumable(){
+    public function mediumable() {
         return $this->morphTo();
     }
 
     public function __construct(array $attributes = [])
     {
         parent::__construct($attributes);
-        if(isset($attributes['file'])){
+        if (isset($attributes['file'])) {
             $this->attach_file($attributes['file']);
         }
     }
 
-    protected function set_up_upload_folders(){
+    protected function set_up_upload_folders() {
 
-        if($this->is('image')){
+        if ($this->is('image')) {
             $large_image_folder = storage_path('app/'.$this->full_path_lg);
             $medium_image_folder = storage_path('app/'.$this->full_path_md);
             $small_image_folder = storage_path('app/'.$this->full_path_sm);
@@ -39,7 +39,7 @@ class Medium extends Model
             File::isDirectory($medium_image_folder) or File::makeDirectory($medium_image_folder, 0777, true, true);
             File::isDirectory($small_image_folder) or File::makeDirectory($small_image_folder, 0777, true, true);
             File::isDirectory($extra_small_image_folder) or File::makeDirectory($extra_small_image_folder, 0777, true, true);
-        }else{
+        }else {
             $path = storage_path('app/'.$this->main_upload_folder."/{$this->type}s/");
             File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
         }
@@ -47,7 +47,7 @@ class Medium extends Model
 
     public function attach_file($file)
     {
-        if($this->id){ // if the file already stored
+        if ($this->id) { // if the file already stored
             return false;
         }
 
@@ -68,7 +68,7 @@ class Medium extends Model
 
     public function detach()
     {
-        if(!$this->id){
+        if (!$this->id) {
             unset($this->file_object);
             unset($this->stored_name);
             unset($this->file_name);
@@ -78,7 +78,7 @@ class Medium extends Model
             unset($this->width);
             unset($this->height);
             return true;
-        }else{
+        }else {
             return false;
         }
     }
@@ -90,23 +90,23 @@ class Medium extends Model
     }
 
     public function store() {
-        if(!$this->file_object){
+        if (!$this->file_object) {
             throw new Exception('No File Attached');
         }
         // Create upload folder if not exists
         $this->set_up_upload_folders();
         $stored_name = $this->store_file_name_hashed() ? $this->file_object->hashName() : $this->full_name;
 
-        if($this->is('image')){
-            if(config('media.LARGE_IMAGE_SIZE')){
+        if ($this->is('image')) {
+            if (config('media.LARGE_IMAGE_SIZE')) {
                 Image::make($this->file_object)
                     ->widen(config('media.LARGE_IMAGE_SIZE'))
                     ->save(storage_path('app/'.$this->full_path_lg.'/'.$stored_name));
-            }else{
+            }else {
                 $this->file_object->storeAs($this->full_path_lg, $stored_name);
             }
 
-            if(config('media.CREATE_RESPONSIVE_SIZES')){
+            if (config('media.CREATE_RESPONSIVE_SIZES')) {
 
                 Image::make($this->file_object)
                     ->widen(config('media.MEDIUM_IMAGE_SIZE'))
@@ -120,31 +120,31 @@ class Medium extends Model
                     ->widen(config('media.EXTRA_SMALL_IMAGE_SIZE'))
                     ->save(storage_path('app/'.$this->full_path_xs.'/'.$this->stored_name));
             }
-        }elseif($this->is($this->type)){
-            $this->file_object->storeAs(config('media.MAIN_UPLOAD_FOLDER').'/'.$this->type.'s',$stored_name);
+        }elseif ($this->is($this->type)) {
+            $this->file_object->storeAs(config('media.MAIN_UPLOAD_FOLDER').'/'.$this->type.'s', $stored_name);
         }
     }
 
-    public function remove(){
-        if($this->delete()){
-            if($this->is('image')){
+    public function remove() {
+        if ($this->delete()) {
+            if ($this->is('image')) {
                 Storage::delete($this->full_path_lg.'/'.$this->stored_name);
                 Storage::delete($this->full_path_md.'/'.$this->stored_name);
                 Storage::delete($this->full_path_sm.'/'.$this->stored_name);
                 Storage::delete($this->full_path_xs.'/'.$this->stored_name);
-            }else{
+            }else {
                 Storage::delete($this->full_path.'/'.$this->stored_name);
             }
             return true;
-        }else{
+        }else {
             return false;
         }
     }
 
-    public function url($image_size = 'lg'){
-        if($this->is('image')){
+    public function url($image_size = 'lg') {
+        if ($this->is('image')) {
             return Storage::url($this->main_upload_folder."/images/{$image_size}/".$this->stored_name);
-        }else{
+        }else {
             return Storage::url($this->main_upload_folder."/{$this->type}s/".$this->stored_name);
         }
     }
@@ -155,23 +155,23 @@ class Medium extends Model
         return $this->file_name.'.'.$this->extension;
     }
 
-    public function getMainUploadFolderAttribute(){
+    public function getMainUploadFolderAttribute() {
         return config('media.MAIN_UPLOAD_FOLDER');
     }
 
-    public function getFullPathLgAttribute(){
+    public function getFullPathLgAttribute() {
         return $this->main_upload_folder.'/images/'.config('media.LARGE_IMAGE_FOLDER_PATH');
     }
 
-    public function getFullPathMdAttribute(){
+    public function getFullPathMdAttribute() {
         return $this->main_upload_folder.'/images/'.config('media.MEDIUM_IMAGE_FOLDER_PATH');
     }
 
-    public function getFullPathSmAttribute(){
+    public function getFullPathSmAttribute() {
         return $this->main_upload_folder.'/images/'.config('media.SMALL_IMAGE_FOLDER_PATH');
     }
 
-    public function getFullPathXsAttribute(){
+    public function getFullPathXsAttribute() {
         return $this->main_upload_folder.'/images/'.config('media.EXTRA_SMALL_IMAGE_FOLDER_PATH');
     }
 
@@ -180,17 +180,17 @@ class Medium extends Model
         return $this->main_upload_folder."/{$this->type}s/";
     }
 
-    public function getTypeAttribute(){
-        return explode('/',$this->mime)[0];
+    public function getTypeAttribute() {
+        return explode('/', $this->mime)[0];
     }
 
     /********************** DETERMINERS *********************/
 
-    public function is($type){
-        return preg_match("/{$type}\/*/",$this->mime);
+    public function is($type) {
+        return preg_match("/{$type}\/*/", $this->mime);
     }
 
-    public function store_file_name_hashed(){
+    public function store_file_name_hashed() {
         return config('media.STORE_FILE_NAME_HASHED');
     }
 
@@ -203,7 +203,7 @@ class Medium extends Model
 
     public function scopeByType($query, $type)
     {
-        return $query->where('mime', 'LIKE', $type.'/%' );
+        return $query->where('mime', 'LIKE', $type.'/%');
     }
 
     public function scopeImages($query)
@@ -216,7 +216,7 @@ class Medium extends Model
         return $query->where('mime', 'LIKE', 'video/%');
     }
 
-    public function scopeOf($query, $value){
+    public function scopeOf($query, $value) {
         return $query->where('mediumable_type', $value);
     }
 
