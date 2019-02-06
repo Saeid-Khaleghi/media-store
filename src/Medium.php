@@ -102,7 +102,7 @@ class Medium extends Model
                 Image::make($this->file_object)
                     ->widen(config('media.LARGE_IMAGE_SIZE'))
                     ->save(storage_path('app/'.$this->full_path_lg.'/'.$stored_name));
-            }else {
+            } else {
                 $this->file_object->storeAs($this->full_path_lg, $stored_name);
             }
 
@@ -132,7 +132,7 @@ class Medium extends Model
                 Storage::delete($this->full_path_md.'/'.$this->stored_name);
                 Storage::delete($this->full_path_sm.'/'.$this->stored_name);
                 Storage::delete($this->full_path_xs.'/'.$this->stored_name);
-            }else {
+            } else {
                 Storage::delete($this->full_path.'/'.$this->stored_name);
             }
             return true;
