@@ -39,7 +39,7 @@ class Medium extends Model
             File::isDirectory($medium_image_folder) or File::makeDirectory($medium_image_folder, 0777, true, true);
             File::isDirectory($small_image_folder) or File::makeDirectory($small_image_folder, 0777, true, true);
             File::isDirectory($extra_small_image_folder) or File::makeDirectory($extra_small_image_folder, 0777, true, true);
-        }else {
+        } else {
             $path = storage_path('app/'.$this->main_upload_folder."/{$this->type}s/");
             File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
         }
@@ -120,7 +120,7 @@ class Medium extends Model
                     ->widen(config('media.EXTRA_SMALL_IMAGE_SIZE'))
                     ->save(storage_path('app/'.$this->full_path_xs.'/'.$this->stored_name));
             }
-        }elseif ($this->is($this->type)) {
+        } elseif ($this->is($this->type)) {
             $this->file_object->storeAs(config('media.MAIN_UPLOAD_FOLDER').'/'.$this->type.'s', $stored_name);
         }
     }
@@ -136,7 +136,7 @@ class Medium extends Model
                 Storage::delete($this->full_path.'/'.$this->stored_name);
             }
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -144,7 +144,7 @@ class Medium extends Model
     public function url($image_size = 'lg') {
         if ($this->is('image')) {
             return Storage::url($this->main_upload_folder."/images/{$image_size}/".$this->stored_name);
-        }else {
+        } else {
             return Storage::url($this->main_upload_folder."/{$this->type}s/".$this->stored_name);
         }
     }
