@@ -68,19 +68,19 @@ class Medium extends Model
 
     public function detach()
     {
-        if (!$this->id) {
-            unset($this->file_object);
-            unset($this->stored_name);
-            unset($this->file_name);
-            unset($this->extension);
-            unset($this->size);
-            unset($this->mime);
-            unset($this->width);
-            unset($this->height);
-            return true;
-        }else {
+        // It the file saved into database
+        if ($this->id) {
             return false;
         }
+        unset($this->file_object);
+        unset($this->stored_name);
+        unset($this->file_name);
+        unset($this->extension);
+        unset($this->size);
+        unset($this->mime);
+        unset($this->width);
+        unset($this->height);
+        return true;
     }
 
     public function save(array $options = [])
