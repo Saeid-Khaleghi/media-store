@@ -18,6 +18,6 @@ class MediaController extends Controller
         $medium = Medium::create([
             'file' => $request->file('photo'),
         ]);
-        return back()->with('url' , $medium->url('sm'));
+        return back()->with('url', $medium->url('sm'));
     }
 }

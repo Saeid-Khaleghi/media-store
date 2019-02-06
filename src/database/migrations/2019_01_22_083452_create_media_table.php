@@ -17,9 +17,9 @@ class CreateMediaTable extends Migration
             $table->increments('id');
             $table->string('stored_name');
             $table->string('file_name');
-            $table->string('extension',5);
+            $table->string('extension', 5);
             $table->string('caption')->nullable();
-            $table->string('mime',30);
+            $table->string('mime', 30);
             $table->integer('size');
             $table->integer('width')->nullable();
             $table->integer('height')->nullable();
@@ -29,7 +29,7 @@ class CreateMediaTable extends Migration
             $table->string('manner')->nullable();
             $table->integer('comments_count')->default(0);
             $table->integer('likes_count')->default(0);
-            $table->string('description',500)->nullable();
+            $table->string('description')->nullable();
             $table->timestamps();
         });
     }

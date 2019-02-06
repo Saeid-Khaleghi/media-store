@@ -18,7 +18,7 @@ return [
      *  Responsive image sizes
      */
 
-    'LARGE_IMAGE_SIZE'      => 0,   //determine that the image store in original size
+    'LARGE_IMAGE_SIZE'      => 0, //determine that the image store in original size
     'MEDIUM_IMAGE_SIZE'     => 540, // It will save the image in 540x540 pixels
     'SMALL_IMAGE_SIZE'      => 270, // It will save the image in 270x270 pixels
     'EXTRA_SMALL_IMAGE_SIZE'=> 135, // It will save the image in 135x135 pixels
