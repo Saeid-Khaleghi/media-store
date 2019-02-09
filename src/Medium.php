@@ -15,6 +15,8 @@ class Medium extends Model
     protected $guarded = ['id', 'file'];
     public $file_object;
 
+    public $file_object_attributes = ['stored_name', 'file_name', 'extension', 'size', 'mime', 'width', 'height'];
+
     public function mediumable() {
         return $this->morphTo();
     }
@@ -29,20 +31,20 @@ class Medium extends Model
 
     protected function set_up_upload_folders() {
 
-        if ($this->is('image')) {
-            $large_image_folder = storage_path('app/'.$this->full_path_lg);
-            $medium_image_folder = storage_path('app/'.$this->full_path_md);
-            $small_image_folder = storage_path('app/'.$this->full_path_sm);
-            $extra_small_image_folder = storage_path('app/'.$this->full_path_xs);
-
-            File::isDirectory($large_image_folder) or File::makeDirectory($large_image_folder, 0777, true, true);
-            File::isDirectory($medium_image_folder) or File::makeDirectory($medium_image_folder, 0777, true, true);
-            File::isDirectory($small_image_folder) or File::makeDirectory($small_image_folder, 0777, true, true);
-            File::isDirectory($extra_small_image_folder) or File::makeDirectory($extra_small_image_folder, 0777, true, true);
-        } else {
-            $path = storage_path('app/'.$this->main_upload_folder."/{$this->type}s/");
+        if (!$this->is('image')) {
+            $path = storage_path('app/' . $this->main_upload_folder . "/{$this->type}s/");
             File::isDirectory($path) or File::makeDirectory($path, 0777, true, true);
+            return null;
         }
+        $large_image_folder = storage_path('app/' . $this->full_path_lg);
+        $medium_image_folder = storage_path('app/' . $this->full_path_md);
+        $small_image_folder = storage_path('app/' . $this->full_path_sm);
+        $extra_small_image_folder = storage_path('app/' . $this->full_path_xs);
+
+        File::isDirectory($large_image_folder) or File::makeDirectory($large_image_folder, 0777, true, true);
+        File::isDirectory($medium_image_folder) or File::makeDirectory($medium_image_folder, 0777, true, true);
+        File::isDirectory($small_image_folder) or File::makeDirectory($small_image_folder, 0777, true, true);
+        File::isDirectory($extra_small_image_folder) or File::makeDirectory($extra_small_image_folder, 0777, true, true);
     }
 
     public function attach_file($file)
@@ -72,14 +74,10 @@ class Medium extends Model
         if ($this->id) {
             return false;
         }
+        foreach($this->file_object_attributes as $attribute){
+            unset($this->$attribute);
+        }
         unset($this->file_object);
-        unset($this->stored_name);
-        unset($this->file_name);
-        unset($this->extension);
-        unset($this->size);
-        unset($this->mime);
-        unset($this->width);
-        unset($this->height);
         return true;
     }
 
@@ -126,19 +124,18 @@ class Medium extends Model
     }
 
     public function remove() {
-        if ($this->delete()) {
-            if ($this->is('image')) {
-                Storage::delete($this->full_path_lg.'/'.$this->stored_name);
-                Storage::delete($this->full_path_md.'/'.$this->stored_name);
-                Storage::delete($this->full_path_sm.'/'.$this->stored_name);
-                Storage::delete($this->full_path_xs.'/'.$this->stored_name);
-            } else {
-                Storage::delete($this->full_path.'/'.$this->stored_name);
-            }
-            return true;
-        } else {
+        if (!$this->delete()) {
             return false;
         }
+        if (!$this->is('image')) {
+            Storage::delete($this->full_path . '/' . $this->stored_name);
+            return true;
+        }
+        Storage::delete($this->full_path_lg . '/' . $this->stored_name);
+        Storage::delete($this->full_path_md . '/' . $this->stored_name);
+        Storage::delete($this->full_path_sm . '/' . $this->stored_name);
+        Storage::delete($this->full_path_xs . '/' . $this->stored_name);
+        return true;
     }
 
     public function url($image_size = 'lg') {
