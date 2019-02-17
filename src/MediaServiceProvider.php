@@ -22,6 +22,7 @@ class MediaServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__.'/config/media.php' => config_path('media.php'),
+            __DIR__.'/database/migrations/' => database_path('migrations')
         ]);
 
     }
