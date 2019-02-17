@@ -21,7 +21,7 @@ composer require khaleghi/media
 
 Then run the following:
 ```bash
-php artisan vendor:publish --provider="Khaleghi\MediaServiceProvider"
+php artisan vendor:publish --provider="Khaleghi\Media\MediaServiceProvider"
 
 php artisan migrate
 ```
