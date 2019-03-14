@@ -3,6 +3,7 @@
 [![Issues](https://img.shields.io/github/issues/Saeid-Khaleghi/media-store.svg?style=flat-square)](https://github.com/Saeid-Khaleghi/media-store/issues)
 [![Forks](	https://img.shields.io/github/forks/Saeid-Khaleghi/media-store.svg?style=flat-square)](https://github.com/Saeid-Khaleghi/media-store/network/members)
 [![Stars](	https://img.shields.io/github/stars/Saeid-Khaleghi/media-store.svg?style=flat-square)](https://github.com/Saeid-Khaleghi/media-store/stargazers)
+<a href="https://packagist.org/packages/khaleghi/media"><img src="https://poser.pugx.org/khaleghi/media/d/total.svg" alt="Total Downloads"></a>
 
 `khaleghi/media-store` is a Laravel package which created to provide an easy way 
 to store any kind of files on server storage and save their attributes in the database.
