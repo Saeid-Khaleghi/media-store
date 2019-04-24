@@ -146,6 +146,21 @@ class Medium extends Model
         }
     }
 
+    public function get_image_info(array $sizes = ['lg','md','sm','xs'])
+    {
+        if(!$this->is('image')){return null;}
+
+        $info = [];
+        foreach ($sizes as $size){
+            $info[$size] = [
+                'src' => url('/').$this->url($size),
+                'width' => $this->width,
+                'height' => $this->height
+            ];
+        }
+        return $info;
+    }
+
     /********************** ACCESSORS *********************/
 
     public function getFullNameAttribute() {
