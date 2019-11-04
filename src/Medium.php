@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\URL;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Response;
 
@@ -140,9 +141,9 @@ class Medium extends Model
 
     public function url($image_size = 'lg') {
         if ($this->is('image')) {
-            return Storage::url($this->main_upload_folder."/images/{$image_size}/".$this->stored_name);
+            return Url::to(Storage::url($this->main_upload_folder."/images/{$image_size}/".$this->stored_name));
         } else {
-            return Storage::url($this->main_upload_folder."/{$this->type}s/".$this->stored_name);
+            return Url::to(Storage::url($this->main_upload_folder."/{$this->type}s/".$this->stored_name));
         }
     }
 
